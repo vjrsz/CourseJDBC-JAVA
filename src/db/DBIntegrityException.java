@@ -1,7 +1,7 @@
 package db;
 
-public class DBException extends RuntimeException {
-    public DBException(String message) {
+public class DBIntegrityException extends RuntimeException {
+    public DBIntegrityException(String message) {
         super(message);
     }
 }

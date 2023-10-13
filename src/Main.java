@@ -1,17 +1,105 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import db.DB;
+import db.DBIntegrityException;
+
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class Main {
+    public static Connection conn = null;
     public static void main(String[] args) {
-        // Press Ctrl+. with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        conn = DB.getConn();
 
-        // Press Ctrl+F5 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        try {
 
-            // Press F5 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing F9.
-            System.out.println("i = " + i);
+            // insert
+            insertSeller("joão", "joao@gmail.com", "10/08/2003", 1000.0, 4);
+
+            // update
+            updateBaseSalarySellerByDepartmentID(100.0, 4);
+
+            // delete
+            deleteDepartment(4);
+
+            // get
+            allDepartment();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DB.closeConn();
+            // DB.closeStatement(st);
+            // DB.closeResultSet(rs);
+        }
+    }
+
+    public static void allDepartment() throws SQLException {
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery("select * from department");
+        System.out.println("Table: Departments");
+        while(rs.next()){
+            System.out.println(rs.getInt("id") + ", " + rs.getString("name"));
+        }
+    }
+
+    public static void insertSeller(String name, String email, String birthdate, Double baseSalary, int departmentID) throws SQLException, ParseException {
+        PreparedStatement pst  = conn.prepareStatement(
+                "INSERT INTO seller " +
+                        "(Name, Email, BirthDate, BaseSalary, DepartmentId)" +
+                        "VALUES (?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS
+        );
+        pst.setString(1, name);
+        pst.setString(2, email);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        pst.setDate(3,  new java.sql.Date(sdf.parse(birthdate).getTime()));
+        pst.setDouble(4, baseSalary);
+        pst.setInt(5, departmentID);
+        printIds(pst.executeUpdate(), pst);
+    }
+
+    public static void updateBaseSalarySellerByDepartmentID(Double baseSalaryAdditional, int departmentID) throws SQLException {
+        PreparedStatement pst = conn.prepareStatement(
+                        "UPDATE seller " +
+                                "SET BaseSalary = BaseSalary + ?" +
+                                "WHERE DepartmentId = ?",
+                        Statement.RETURN_GENERATED_KEYS
+                );
+        pst.setDouble(1, baseSalaryAdditional);
+        pst.setInt(2, departmentID);
+        printIds(pst.executeUpdate(), pst);
+    }
+
+    public static void deleteDepartment(int departmentID) {
+        try{
+            PreparedStatement pst = conn.prepareStatement(
+                    "DELETE from department " +
+                            "WHERE Id = ?"
+            );
+            pst.setInt(1, departmentID);
+
+            int rowsAffected = pst.executeUpdate();
+            System.out.println("Done! Rows Affected: " + rowsAffected);
+        } catch (SQLException e){
+            throw new DBIntegrityException(e.getMessage());
+        }
+    }
+    public static void printIds(int rowsAffected, PreparedStatement pst){
+        try {
+            if( rowsAffected > 0 ){
+                ResultSet rs = pst.getGeneratedKeys();
+                System.out.println("Done! Rows Affected: " + rowsAffected);
+                while(rs.next()) {
+                    System.out.println("Id: " + rs.getInt(1));
+                }
+                System.out.println();
+            }else{
+                System.out.println("No rows Affected");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
