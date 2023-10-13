@@ -1,4 +1,5 @@
 import db.DB;
+import db.DBException;
 import db.DBIntegrityException;
 
 import java.sql.*;
@@ -24,11 +25,23 @@ public class Main {
             // get
             allDepartment();
 
+            /* commit
+                conn.setAutoCommit(false); // Disable automatic commit
+                conn.commit(); // Confirm transactions
+            */
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                conn.rollback(); // In case of error, roll back all pending transactions
+                throw new DBException(e.getMessage());
+            } catch (SQLException ex) {
+                throw new DBException(ex.getMessage());
+            }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         } finally {
+            // conn.setAutoCommit(true); // Enable automatic commit again
+            DB.closeConn();
             DB.closeConn();
             // DB.closeStatement(st);
             // DB.closeResultSet(rs);
