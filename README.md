@@ -141,3 +141,4 @@ Have fun exploring Calculator in Vue.js! thanks!
 [Java-url]: https://www.java.com/pt-BR/
 [Mysql]: https://img.shields.io/badge/Mysql-20232A?style=for-the-badge&logo=Mysql&logoColor=61DAFB
 [Mysql-url]: https://www.mysql.com
+ 
