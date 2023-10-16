@@ -129,7 +129,7 @@ Have fun exploring Calculator in Vue.js! thanks!
 [issues-shield]: https://img.shields.io/github/issues/vjrsz/CourseJDBC-JAVA.svg?style=for-the-badge
 [issues-url]: https://github.com/vjrsz/CourseJDBC-JAVA/issues
 [license-shield]: https://img.shields.io/github/license/vjrsz/CourseJDBC-JAVA.svg?style=for-the-badge
-[license-url]: https://github.com/vjrsz/CourseJDBC-JAVA/blob/master/LICENSE.txt
+[license-url]: https://github.com/vjrsz/CourseJDBC-JAVA/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/vjrsz
 [email]: https://img.shields.io/badge/Email-000000?style=for-the-badge&logo=gmail&logoColor=white
