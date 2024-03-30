@@ -104,7 +104,6 @@ If you want to contribute to this project and add new features, fix bugs or impr
 ## License
 
 This project is licensed under the MIT License - see the <a href="./LICENSE">LICENSE</a> file for details.
-Have fun exploring Calculator in Vue.js! thanks!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
